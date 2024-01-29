@@ -7,6 +7,8 @@ import 'package:tap_journal/models/journal_entry_template.dart';
 import 'package:tap_journal/repository/repository.dart';
 import 'package:tap_journal/repository/repository_mixin.dart';
 
+/// A repository implementation that uses shared preferences for data storage.
+/// It extends the [RepositoryMixin] class and implements the [Repository] interface.
 class SharedPrefsRepository with RepositoryMixin implements Repository {
   final _subject = BehaviorSubject<List<JournalEntryTemplate>>.seeded([]);
   late SharedPreferences _prefs;
@@ -18,6 +20,8 @@ class SharedPrefsRepository with RepositoryMixin implements Repository {
   static const String _isFirstRun = 'is_first_run';
 
   @override
+
+  /// Adds a journal entry to the shared preferences repository.
   Future<void> addJournalEntry(JournalEntry journalEntry) async {
     String json = jsonEncode(journalEntry.toJson());
     var list = _prefs.getStringList(_entryKey) ?? [];
@@ -26,6 +30,10 @@ class SharedPrefsRepository with RepositoryMixin implements Repository {
   }
 
   @override
+
+  /// Sets the journal entry template.
+  ///
+  /// It creates a new template if the template id is null, and updates the template if the template id is not null.
   Future<void> setJournalEntryTemplate(
       JournalEntryTemplate journalEntryTemplate) async {
     if (journalEntryTemplate.id != null) {
@@ -48,6 +56,11 @@ class SharedPrefsRepository with RepositoryMixin implements Repository {
   }
 
   @override
+
+  /// Deletes a journal entry template with the specified [id].
+  ///
+  /// This method is used to delete a journal entry template from the shared preferences repository.
+  /// The [id] parameter specifies the unique identifier of the template to be deleted.
   Future<void> deleteJournalEntryTemplate(int id) async {
     _templates.removeWhere((element) => element.id == id);
     _subject.add(_templates);
@@ -58,11 +71,16 @@ class SharedPrefsRepository with RepositoryMixin implements Repository {
   }
 
   @override
+
+  /// Returns a [BehaviorSubject] that emits a stream of [List<JournalEntryTemplate>].
   BehaviorSubject<List<JournalEntryTemplate>> getStream() {
     return _subject;
   }
 
   @override
+
+  /// Initializes the shared preferences repository.
+  /// This method should be called before using any other methods in the repository.
   Future<void> init() async {
     _prefs = await SharedPreferences.getInstance();
 
@@ -73,6 +91,8 @@ class SharedPrefsRepository with RepositoryMixin implements Repository {
   }
 
   @override
+
+  /// Retrieves a list of journal entries from the shared preferences repository asynchronously.
   Future<List<JournalEntry>> getJournalEntries() async {
     var list = _prefs.getStringList(_entryKey) ?? [];
     var entries =
@@ -81,11 +101,15 @@ class SharedPrefsRepository with RepositoryMixin implements Repository {
   }
 
   @override
+
+  /// This method clears all the data stored in the shared preferences.
   Future<void> clear() async {
     await _prefs.clear();
   }
 
   @override
+
+  /// Seeds the repository with initial data.
   Future<void> seed() async {
     var result = await isFirstRun();
     if (result) {
@@ -97,6 +121,8 @@ class SharedPrefsRepository with RepositoryMixin implements Repository {
   }
 
   @override
+
+  /// Checks if the app is running for the first time.
   Future<bool> isFirstRun() async {
     bool? isFirstRun = _prefs.getBool(_isFirstRun);
     if (isFirstRun == null) {
