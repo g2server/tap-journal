@@ -5,8 +5,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tap_journal/models/journal_entry.dart';
 import 'package:tap_journal/models/journal_entry_template.dart';
 import 'package:tap_journal/repository/repository.dart';
+import 'package:tap_journal/repository/repository_mixin.dart';
 
-class SharedPrefsRepository implements Repository {
+class SharedPrefsRepository with RepositoryMixin implements Repository {
   final _subject = BehaviorSubject<List<JournalEntryTemplate>>.seeded([]);
   late SharedPreferences _prefs;
   final List<JournalEntryTemplate> _templates = [];
@@ -71,11 +72,6 @@ class SharedPrefsRepository implements Repository {
     _subject.add(_templates);
   }
 
-  int mySortComparison(JournalEntryTemplate a, JournalEntryTemplate b) {
-    return (b.latestEntryDateTime ?? DateTime(0))
-        .compareTo(a.latestEntryDateTime ?? DateTime(0));
-  }
-
   @override
   Future<List<JournalEntry>> getJournalEntries() async {
     var list = _prefs.getStringList(_entryKey) ?? [];
@@ -93,13 +89,10 @@ class SharedPrefsRepository implements Repository {
   Future<void> seed() async {
     var result = await isFirstRun();
     if (result) {
-      var template1 = const JournalEntryTemplate(
-          title: 'Make the bed', tags: ['quickly', 'properly']);
-      await setJournalEntryTemplate(template1);
-
-      var template2 = const JournalEntryTemplate(
-          title: 'Stretching', tags: ['5m', '10m', 'back', 'legs', 'arms']);
-      await setJournalEntryTemplate(template2);
+      var mocks = createMockTemplates();
+      for (var mock in mocks) {
+        await setJournalEntryTemplate(mock);
+      }
     }
   }
 

@@ -5,7 +5,8 @@ import 'package:tap_journal/app.dart';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
-import 'package:tap_journal/repository/shared_prefs/shared_prefs_repository.dart';
+import 'package:tap_journal/repository/in_memory_repository.dart';
+import 'package:tap_journal/repository/shared_prefs_repository.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
