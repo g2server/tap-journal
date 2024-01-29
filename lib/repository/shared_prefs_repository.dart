@@ -58,8 +58,8 @@ class SharedPrefsRepository with RepositoryMixin implements Repository {
   }
 
   @override
-  Stream<List<JournalEntryTemplate>> getStream() {
-    return _subject.asBroadcastStream();
+  BehaviorSubject<List<JournalEntryTemplate>> getStream() {
+    return _subject;
   }
 
   @override

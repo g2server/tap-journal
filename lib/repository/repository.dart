@@ -1,3 +1,4 @@
+import 'package:rxdart/subjects.dart';
 import 'package:tap_journal/models/journal_entry.dart';
 import 'package:tap_journal/models/journal_entry_template.dart';
 
@@ -19,7 +20,7 @@ abstract class Repository {
 
   Future<List<JournalEntry>> getJournalEntries();
 
-  Stream<List<JournalEntryTemplate>> getStream();
+  BehaviorSubject<List<JournalEntryTemplate>> getStream();
 
   Future<bool> isFirstRun();
 }
