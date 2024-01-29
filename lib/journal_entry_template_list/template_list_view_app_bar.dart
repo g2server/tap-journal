@@ -1,5 +1,5 @@
 import 'dart:convert' show utf8;
-import 'dart:html' show AnchorElement;
+//import 'package:http/http.dart' as http;
 import 'package:csv/csv.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -53,12 +53,12 @@ class TemplateListViewAppBar extends StatelessWidget
   }
 
   void saveTextFile(String text, String filename) {
-    AnchorElement()
-      ..href =
-          '${Uri.dataFromString(text, mimeType: 'text/plain', encoding: utf8)}'
-      ..download = filename
-      ..style.display = 'none'
-      ..click();
+    // http.
+    //   ..href =
+    //       '${Uri.dataFromString(text, mimeType: 'text/plain', encoding: utf8)}'
+    //   ..download = filename
+    //   ..style.display = 'none'
+    //   ..click();
   }
 
   @override
