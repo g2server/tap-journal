@@ -58,9 +58,6 @@ class SharedPrefsRepository with RepositoryMixin implements Repository {
   @override
 
   /// Deletes a journal entry template with the specified [id].
-  ///
-  /// This method is used to delete a journal entry template from the shared preferences repository.
-  /// The [id] parameter specifies the unique identifier of the template to be deleted.
   Future<void> deleteJournalEntryTemplate(int id) async {
     _templates.removeWhere((element) => element.id == id);
     _subject.add(_templates);
@@ -71,8 +68,6 @@ class SharedPrefsRepository with RepositoryMixin implements Repository {
   }
 
   @override
-
-  /// Returns a [BehaviorSubject] that emits a stream of [List<JournalEntryTemplate>].
   BehaviorSubject<List<JournalEntryTemplate>> getStream() {
     return _subject;
   }
